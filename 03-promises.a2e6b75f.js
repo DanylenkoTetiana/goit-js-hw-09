@@ -1,2 +1,0 @@
-const o=document.querySelector("button"),e=document.querySelector("input[name=amount]"),l=document.querySelector("input[name=delay]"),n=document.querySelector("input[name= step]");console.log(formEl),console.log(l.value);function t(o,e){Math.random();console.log("helloy")}o.addEventListener("submit",(()=>{console.log("Helloy");for(let o=1;o<=e.value;o+=1){console.log(o),console.log(e.value);const u=l.value+n.value;console.log(l.value),console.log(n.value),console.log(u),t(o,u)}}));
-//# sourceMappingURL=03-promises.a2e6b75f.js.map
