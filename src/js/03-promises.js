@@ -1,32 +1,50 @@
 ' use strict';
-const buttonEl = document.querySelector('button');
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+const formEl = document.querySelector('.form');
 const amountEl = document.querySelector('input[name=amount]');
 const delayEl = document.querySelector('input[name=delay]');
 const stepEl = document.querySelector('input[name= step]');
-console.log(formEl);
-console.log(delayEl.value);
+// console.log(formEl);
+// const args = [];
+// const numbersArrey = [];
+// const delayArrey = [];
 
-const handleSubmit = () => {
-  console.log(`Helloy`);
+formEl.addEventListener('submit', handleSubmit);
+function handleSubmit(event) {
+  event.preventDefault();
+  let calculatedDelay = Number(delayEl.value) - Number(stepEl.value);
+  // let numbers = 1;
   for (let i = 1; i <= amountEl.value; i += 1) {
-    console.log(i);
-    console.log(amountEl.value);
+    // numbersArrey.push(i);
 
-    const calculatedDelay = delayEl.value + stepEl.value;
-    console.log(delayEl.value);
-    console.log(stepEl.value);
-    console.log(calculatedDelay);
-    createPromise(i, calculatedDelay);
+    calculatedDelay += Number(stepEl.value);
+    // delayArrey.push(calculatedDelay);
+
+    createPromise(i, calculatedDelay)
+      .then(({ position, delay }) => {
+        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
+        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+      });
+    console.log(createPromise(i, calculatedDelay));
+    // console.log(numbersArrey);
+    // console.log(delayArrey);
   }
-};
-buttonEl.addEventListener('submit', handleSubmit);
+}
+
+// console.log(createPromise(1, 3000));
 
 function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  console.log(`helloy`);
-  if (shouldResolve) {
-    // Fulfill
-  } else {
-    // Reject
-  }
+  return new Promise((resolve, reject) => {
+    const shouldResolve = Math.random() > 0.3;
+
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({ position, delay });
+      } else {
+        reject({ position, delay });
+      }
+    }, delay);
+  });
 }
